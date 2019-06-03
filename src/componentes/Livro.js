@@ -8,10 +8,10 @@ class FormularioLivro extends Component {
   constructor(props) {
     super(props);
     this.state = {titulo: '', preco: '', autorId: ''};
-    this.setTitulo = this.setTitulo.bind(this);
-    this.setPreco = this.setPreco.bind(this);
-    this.setAutorId = this.setAutorId.bind(this);   
-    this.handleLivroSubmit = this.handleLivroSubmit.bind(this);
+    //this.setTitulo = this.setTitulo.bind(this);
+    //this.setPreco = this.setPreco.bind(this);
+    //this.setAutorId = this.setAutorId.bind(this);   
+    //this.handleLivroSubmit = this.handleLivroSubmit.bind(this);
   }
 
   setTitulo(e) {
@@ -22,10 +22,12 @@ class FormularioLivro extends Component {
     this.setState({preco: e.target.value});
   }
 
-  setAutorId(e) {
+  setAutorId(msg, e) {
+    console.log(typeof(msg))
+    console.log(msg)
+    console.log(e)
     this.setState({autorId: e.target.value});
   }
-
 
   handleLivroSubmit(e) {
     e.preventDefault();
@@ -34,7 +36,7 @@ class FormularioLivro extends Component {
     var autorId = this.state.autorId;
 
     $.ajax({
-      url: 'https://cdc-react.herokuapp.com/api/livros',
+      url: 'http://localhost:8080/api/livros',
       contentType: 'application/json',
       dataType: 'json',
       type: 'POST',
@@ -42,7 +44,7 @@ class FormularioLivro extends Component {
       success: function(novaListagem) {
           PubSub.publish( 'atualiza-lista-livros',novaListagem);            
           this.setState({titulo:'',preco:'',autorId:''});
-      },
+      }.bind(this),
       error: function(resposta){
         if(resposta.status === 400){
           new TratadorErros().publicaErros(resposta.responseJSON);
@@ -63,11 +65,11 @@ class FormularioLivro extends Component {
 
     return (
       <div className="autorForm">
-        <form className="pure-form pure-form-aligned" onSubmit={this.handleLivroSubmit}>
-          <InputCustomizado id="titulo" name="titulo" label="Titulo: " type="text" value={this.state.titulo} placeholder="Titulo do livro" onChange={this.setTitulo} />
-          <InputCustomizado id="preco" name="preco" label="Preco: " type="decimal" value={this.state.preco} placeholder="Preço do livro" onChange={this.setPreco} />
+        <form className="pure-form pure-form-aligned" onSubmit={this.handleLivroSubmit.bind(this)}>
+          <InputCustomizado id="titulo" name="titulo" label="Titulo: " type="text" value={this.state.titulo} placeholder="Titulo do livro" onChange={this.setTitulo.bind(this)} />
+          <InputCustomizado id="preco" name="preco" label="Preco: " type="decimal" value={this.state.preco} placeholder="Preço do livro" onChange={this.setPreco.bind(this)} />
           <div className="pure-controls">
-            <select value={this.state.autorId} name="autorId" onChange={this.setAutorId}>
+            <select value={this.state.autorId} name="autorId" onChange={this.setAutorId.bind(this, "teste")}>
               <option value="">Selecione</option>
               {autores}
             </select>
@@ -119,7 +121,7 @@ export default class LivroAdmin extends Component {
 
   componentDidMount() {
     $.ajax({
-      url: "https://cdc-react.herokuapp.com/api/livros",
+      url: "http://localhost:8080/api/livros",
       dataType: 'json',
       success: function(data) {
         this.setState({lista: data});
@@ -127,7 +129,7 @@ export default class LivroAdmin extends Component {
     });
 
     $.ajax({
-      url: "https://cdc-react.herokuapp.com/api/autores",
+      url: "http://localhost:8080/api/autores",
       dataType: 'json',
       success: function(data) {
         this.setState({autores: data});

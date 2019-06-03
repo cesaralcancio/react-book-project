@@ -20,7 +20,7 @@ class FormularioAutor extends Component {
         console.log("dados sendo enviados FormularioAutor");
     
         $.ajax({
-          url:"http://cdc-react.herokuapp.com/api/autores",
+          url:"http://localhost:8080/api/autores",
           contentType: 'application/json',
           dataType:'json',
           type:'post',
@@ -113,7 +113,7 @@ export default class AutorBox extends Component {
   componentDidMount() {
       console.log('didMount TabelaAutores');
       $.ajax({
-        url:"http://cdc-react.herokuapp.com/api/autores",
+        url:"http://localhost:8080/api/autores",
         dataType: 'json',
         success:function(resposta){
           this.setState({lista:resposta});

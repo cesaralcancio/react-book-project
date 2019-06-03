@@ -14,7 +14,9 @@ export default class InputCustomizado extends Component {
         return (
             <div className="pure-control-group">
                 <label htmlFor="nome">{this.props.label}</label>
-                <input id={this.props.id} type={this.props.type} name={this.props.nome} value={this.props.value} onChange={this.props.onChange} />
+                {/* <input id={this.props.id} type={this.props.type} name={this.props.nome} value={this.props.value} onChange={this.props.onChange} /> */}
+                {/* spread operator example instead of the code below */}
+                <input {...this.props} />
                 <span className="erro">{this.state.msgErro}</span>
             </div>
         );
