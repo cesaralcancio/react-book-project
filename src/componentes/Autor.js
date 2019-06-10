@@ -10,9 +10,9 @@ class FormularioAutor extends Component {
         super();
         this.state = {lista : [], nome: 'algo', email: "algoo@algoo.com", senha: "123"};
         this.enviaForm = this.enviaForm.bind(this);
-        this.setNome = this.setNome.bind(this);
-        this.setEmail = this.setEmail.bind(this);
-        this.setSenha = this.setSenha.bind(this);
+        //this.setNome = this.setNome.bind(this);
+        //this.setEmail = this.setEmail.bind(this);
+        //this.setSenha = this.setSenha.bind(this);
       }
 
       enviaForm(evento) {
@@ -44,6 +44,7 @@ class FormularioAutor extends Component {
       }
     
       setNome(evento) {
+        console.log(this)
         console.log("setNome FormularioAutor");
         this.setState({nome:evento.target.value});
       }
@@ -58,13 +59,20 @@ class FormularioAutor extends Component {
         this.setState({senha:evento.target.value});
       }
 
+      setValue(attr, event) {
+        console.log(this)
+        var json = {};
+        json[attr] = event.target.value;
+        this.setState(json);
+      }
+
       render() {
           return (
             <div className="pure-form pure-form-aligned"> 
                 <form className="pure-form pure-form-aligned" onSubmit={this.enviaForm} method="post">
-                    <InputCustomizado label="Nome" id="nome" type="text" name="nome" value={this.state.nome} onChange={this.setNome} />
-                    <InputCustomizado label="E-mail" id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail} />
-                    <InputCustomizado label="Senha" id="senha" type="senha" name="senha" value={this.state.senha} onChange={this.setSenha} />
+                    <InputCustomizado label="Nome" id="nome" type="text" name="nome" value={this.state.nome} onChange={(e) => {this.setValue('nome', e)}} />
+                    <InputCustomizado label="E-mail" id="email" type="email" name="email" value={this.state.email} onChange={(e) => {this.setValue('email', e)}} />
+                    <InputCustomizado label="Senha" id="senha" type="senha" name="senha" value={this.state.senha} onChange={(e) => {this.setValue('senha', e)}} />
                     <Submit label="Gravar"/>
                 </form>
             </div> 
